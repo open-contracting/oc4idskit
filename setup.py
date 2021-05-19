@@ -17,6 +17,7 @@ setup(
     install_requires=[
         "jsonpointer",
         "ocdskit>=1",
+        'ocdsmerge>=0.6',
     ],
     extras_require={
         "test": [
