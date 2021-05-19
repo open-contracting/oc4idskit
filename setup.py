@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/x-rst",
     install_requires=[
         "jsonpointer",
-        "ocdskit",
+        "ocdskit>=1",
     ],
     extras_require={
         "test": [

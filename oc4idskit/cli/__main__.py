@@ -1,6 +1,6 @@
 import logging
 
-from ocdskit.cli.__main__ import main as ocdskit_main
+from ocdskit.cli.__main__ import main as _main
 
 
 def main():
@@ -11,7 +11,7 @@ def main():
 
     logger = logging.getLogger("oc4idskit")
 
-    ocdskit_main(
+    _main(
         description="Open Contracting for Infrastructure Data Standards CLI",
         modules=modules,
         logger=logger,
