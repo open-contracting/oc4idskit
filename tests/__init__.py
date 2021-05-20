@@ -33,8 +33,7 @@ def assert_equal(actual, expected, ordered=True):
                 ), "\n{}\n{}".format(a, b)
 
 
-@patch("sys.stdout", new_callable=StringIO)
-def run_streaming(monkeypatch, main, args, stdin, stdout):
+def run_streaming(capsys, monkeypatch, main, args, stdin):
     if not isinstance(stdin, bytes):
         stdin = b"".join(read(filename, "rb") for filename in stdin)
 
@@ -42,13 +41,13 @@ def run_streaming(monkeypatch, main, args, stdin, stdout):
         monkeypatch.setattr(sys, "argv", ["ocdskit"] + args)
         main()
 
-    return stdout.getvalue()
+    return capsys.readouterr()
 
 
-def assert_streaming(monkeypatch, main, args, stdin, expected, ordered=True):
-    actual = run_streaming(monkeypatch, main, args, stdin)
+def assert_streaming(capsys, monkeypatch, main, args, stdin, expected, ordered=True):
+    actual = run_streaming(capsys, monkeypatch, main, args, stdin)
 
     if not isinstance(expected, str):
         expected = "".join(read(filename) for filename in expected)
 
-    assert_equal(actual, expected, ordered=ordered)
+    assert_equal(actual.out, expected, ordered=ordered)

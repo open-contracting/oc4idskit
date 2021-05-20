@@ -2,8 +2,9 @@ from oc4idskit.cli.__main__ import main
 from tests import assert_streaming
 
 
-def test_command(monkeypatch):
+def test_command(capsys, monkeypatch):
     assert_streaming(
+        capsys,
         monkeypatch,
         main,
         ["convert-from-ocds", "--project-id", "1"],
@@ -12,8 +13,9 @@ def test_command(monkeypatch):
     )
 
 
-def test_command_package(monkeypatch):
+def test_command_package(capsys, monkeypatch):
     assert_streaming(
+        capsys,
         monkeypatch,
         main,
         ["convert-from-ocds", "--project-id", "1", "--package"],
