@@ -22,10 +22,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      - env:
-          PYTHONIOENCODING: utf-8
-          PYTHONUTF8: 1
-        run: pip install .[test]
+      - run: pip install .[test]
       - run: pytest --cov oc4idskit --vcr-record=none
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
