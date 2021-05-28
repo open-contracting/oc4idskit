@@ -22,7 +22,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/setup.py') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      - run: pip install .[test] 'coveralls<3'
+      - run: pip install .[test]
       - run: pytest --cov oc4idskit --vcr-record=none
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
