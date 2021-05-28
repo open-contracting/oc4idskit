@@ -24,6 +24,6 @@ jobs:
             ${{ runner.os }}-pip-
       - run: pip install .[test]
       - run: pytest --cov oc4idskit --vcr-record=none
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: coveralls --service=github
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
