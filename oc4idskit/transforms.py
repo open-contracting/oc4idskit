@@ -36,9 +36,7 @@ def check_type(item, item_type):
     """
     if not isinstance(item, item_type):
         if item:
-            logger.warning(
-                "item %s is not of type %s so skipping", item, item_type.__name__
-            )
+            logger.warning("%r is not a %s - setting to an empty %s", item, item_type.__name__)
         return item_type()
     return item
 
@@ -49,7 +47,7 @@ def cast_number_or_zero(item):
         return decimal.Decimal(item)
     except (ValueError, TypeError):
         if item:
-            logger.warning("item %s is not a number treating as zero", item)
+            logger.warning("%r could not be converted to a number - setting to zero", item)
         return 0
 
 
@@ -62,7 +60,7 @@ def cast_string(item):
         return str(item)
 
     if item:
-        logger.warning("item %s is not able to be converted to a string", item)
+        logger.warning("%r could not be converted to a string - setting to an empty string", item)
     return ""
 
 
