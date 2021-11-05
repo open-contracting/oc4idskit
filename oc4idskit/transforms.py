@@ -303,7 +303,7 @@ def concat_ocid_and_string(state, path_to_string):
         a_string = cast_string(resolve(compiled_release, path_to_string))
 
         if a_string:
-            concat = "<{}> {}\n".format(ocid, a_string)
+            concat = f"<{ocid}> {a_string}\n"
             strings = strings + concat
 
     return strings

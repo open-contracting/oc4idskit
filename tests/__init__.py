@@ -30,7 +30,7 @@ def assert_equal(actual, expected, ordered=True):
             if a != b != "":
                 assert ocdskit.util.jsonlib.loads(a) == ocdskit.util.jsonlib.loads(
                     b
-                ), "\n{}\n{}".format(a, b)
+                ), f"\n{a}\n{b}"
 
 
 def run_streaming(capsys, monkeypatch, main, args, stdin):
