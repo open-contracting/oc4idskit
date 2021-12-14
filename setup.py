@@ -27,9 +27,9 @@ setup(
             "pytest-vcr",
         ],
         "docs": [
-            "Sphinx",
+            "furo",
+            "sphinx",
             "sphinx-autobuild",
-            "sphinx-rtd-theme",
         ],
     },
     classifiers=[
