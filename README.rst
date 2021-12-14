@@ -10,6 +10,7 @@ If you are viewing this on GitHub or PyPI, open the `full documentation <https:/
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/oc4idskit.svg
    :target: https://pypi.org/project/oc4idskit/
 .. |Build Status| image:: https://github.com/open-contracting/oc4idskit/workflows/CI/badge.svg
+   :target: https://github.com/open-contracting/oc4idskit/actions?query=workflow%3ACI
 .. |Coverage Status| image:: https://coveralls.io/repos/github/open-contracting/oc4idskit/badge.svg?branch=main
    :target: https://coveralls.io/github/open-contracting/oc4idskit?branch=main
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/oc4idskit.svg
