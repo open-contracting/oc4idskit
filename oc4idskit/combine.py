@@ -1,7 +1,9 @@
 import warnings
 
 from oc4idskit.exceptions import MissingProjectsWarning
-from oc4idskit.util import (_empty_project_package, _remove_empty_optional_metadata, _update_package_metadata)
+from oc4idskit.util import (_empty_project_package,
+                            _remove_empty_optional_metadata,
+                            _update_package_metadata)
 
 DEFAULT_VERSION = '0.9'  # fields might be deprecated
 
