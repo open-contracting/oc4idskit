@@ -55,6 +55,41 @@ Mandatory positional arguments:
 
 The ``split`` command will write files named ``xaaaa``, ``xaaab``, ``xaaac``, etc. Don't combine the OC4IDS Kit ``--pretty`` option with the ``split-project-packages`` command.
 
+.. _split-project-packages:
+
+combine-project-packages
+----------------------
+
+combine-release-packages
+------------------------
+
+Reads project packages from standard input, collects projects, and prints one project package.
+
+If the ``--publisher-*`` options aren't used, the output package will have the same publisher as the last input package.
+
+Optional arguments:
+
+--uri URL                             set the project package's ``uri`` to this value
+--published-date PUBLISHED_DATE       set the project package's ``publishedDate`` to this value
+--version VERSION                     set the project package's ``version`` to this value
+--publisher-name PUBLISHER_NAME       set the project package's ``publisher``'s ``name`` to this value
+--publisher-uri PUBLISHER_URI         set the project package's ``publisher``'s ``uri`` to this value
+--publisher-scheme PUBLISHER_SCHEME   set the project package's ``publisher``'s ``scheme`` to this value
+--publisher-uid PUBLISHER_UID         set the project package's ``publisher``'s ``uid`` to this value
+--fake                                set the project package's required metadata to dummy values
+
+.. code-block:: bash
+
+    cat tests/fixtures/project_package_split.json | oc4idskit combine-project-packages > out.json
+
+If you need to create a single package that is too large to hold in your system's memory, please `comment on this issue <https://github.com/open-contracting/ocdskit/issues/119>`__.
+
+For the Python API, see :meth:`oc4idskit.combine.combine_project_packages`.
+
+.. note::
+
+   A warning is issued if a package's ``"projects"`` field isn't set.
+
 .. _convert-from-ocds:
 
 convert-from-ocds
