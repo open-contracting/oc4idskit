@@ -55,12 +55,9 @@ Mandatory positional arguments:
 
 The ``split`` command will write files named ``xaaaa``, ``xaaab``, ``xaaac``, etc. Don't combine the OC4IDS Kit ``--pretty`` option with the ``split-project-packages`` command.
 
-.. _split-project-packages:
+.. _combine-project-packages:
 
 combine-project-packages
-----------------------
-
-combine-release-packages
 ------------------------
 
 Reads project packages from standard input, collects projects, and prints one project package.

@@ -8,7 +8,7 @@ def _empty_package(uri, publisher, published_date, version):
         'publishedDate': published_date,
         'license': None,
         'publicationPolicy': None,
-        'version': version
+        'version': version,
     }
 
 
