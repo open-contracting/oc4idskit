@@ -3,6 +3,7 @@
 A suite of command-line tools for working with OC4IDS data to:
 
 * split large packages into small packages
+* combine packages
 * convert OCDS data to OC4IDS data
 
 If you are viewing this on GitHub or PyPI, open the `full documentation <https://oc4idskit.readthedocs.io/>`__ for additional details.
