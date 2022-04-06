@@ -24,7 +24,7 @@ jobs:
       - run: pip install .[test]
       - env:
           # https://github.com/yaml/pyyaml/issues/534
-          PYTHONWARNINGS: error,ignore::ImportWarning:yaml.cyaml
+          PYTHONWARNINGS: error,ignore::ImportWarning:yaml[.*]
         run: pytest --cov oc4idskit --vcr-record=none
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
