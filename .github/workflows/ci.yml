@@ -21,10 +21,10 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt', 'setup.py') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+      - run: pip install .[test]
       - env:
           PYTHONWARNINGS: error
-        run: pip install .[test]
-      - run: pytest --cov oc4idskit --vcr-record=none
+        run: pytest --cov oc4idskit --vcr-record=none
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: coveralls --service=github
