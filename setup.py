@@ -16,7 +16,7 @@ setup(
     long_description_content_type="text/x-rst",
     install_requires=[
         "jsonpointer",
-        "ocdskit>=1",
+        "ocdskit>=1.1.2",
         'ocdsmerge>=0.6',
     ],
     extras_require={
@@ -45,7 +45,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "oc4idskit = oc4idskit.cli.__main__:main",
+            "oc4idskit = oc4idskit.__main__:main",
         ],
     },
 )
