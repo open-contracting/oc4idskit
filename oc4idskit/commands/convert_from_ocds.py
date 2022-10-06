@@ -1,7 +1,7 @@
 import logging
 
-from ocdskit.commands.base import OCDSCommand
 from ocdskit.combine import _package
+from ocdskit.commands.base import OCDSCommand
 
 from oc4idskit import transforms
 
