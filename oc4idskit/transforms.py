@@ -68,7 +68,7 @@ def run_transforms(config, releases, project_id=None, records=None, output=None)
     """
     Transforms a list of OCDS releases into a OC4IDS project.
 
-    :param dict config: contains optional tranform options.
+    :param dict config: contains optional transform options.
     :param list releases: list of OCDS releases or release packages
     :param string project_id: project ID of resulting project
     :param list records: pre computed list of records
@@ -398,8 +398,8 @@ def title_from_tender(state):
 
 def contracting_process_setup(state):
     """
-    This will initailly create the contracting process objects and the summary object within. All transforms that use
-    contracting processes need to run this tranform first.
+    This will initially create the contracting process objects and the summary object within. All transforms that use
+    contracting processes need to run this transform first.
     """
     state.output["contractingProcesses"] = []
 
@@ -437,7 +437,7 @@ def procuring_entity(state):
                 procuring_entities.append(party)
         if len(procuring_entities) > 1:
             logger.warning(
-                "More than one procuringEntity in contractingProcesses with ocid %s skipping tranform",
+                "More than one procuringEntity in contractingProcesses with ocid %s skipping transform",
                 compiled_release.get("ocid"),
             )
             continue
@@ -467,7 +467,7 @@ def administrative_entity(state):
                 administrative_entities.append(party)
         if len(administrative_entities) > 1:
             logger.warning(
-                "More than one administrativeEntity in contractingProcesses with ocid %s skipping tranform",
+                "More than one administrativeEntity in contractingProcesses with ocid %s skipping transform",
                 compiled_release.get("ocid"),
             )
             continue

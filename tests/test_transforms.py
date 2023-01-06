@@ -8,7 +8,7 @@ from tests import read
 
 
 @pytest.mark.vcr()
-def test_initial_tranform_state():
+def test_initial_transform_state():
     releases = json.loads(read("release-package_additional-contact-points.json"))[
         "releases"
     ]
