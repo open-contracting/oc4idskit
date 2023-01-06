@@ -289,7 +289,7 @@ def test_sector():
     output = transforms._run_transforms(releases, "1", transforms=[transforms.sector])
     assert output["sector"] == ["COFOG-04.5.1"]
 
-    # 2 contracting processes but differnt sector
+    # 2 contracting processes but different sector
     releases[1]["planning"]["project"]["sector"]["id"] = "2"
     output = transforms._run_transforms(releases, "1", transforms=[transforms.sector])
     assert set(output["sector"]) == set(["COFOG-04.5.1", "COFOG-2"])
