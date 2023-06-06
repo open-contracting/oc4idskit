@@ -16,7 +16,6 @@ jobs:
           cache: pip
           cache-dependency-path: setup.cfg
       - run: pip install .[test]
-      # An HTTP response contains binary data, so pytest-cov's JSON serializer can't be used.
       - run: pytest -W error --cov oc4idskit --vcr-record=none
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
