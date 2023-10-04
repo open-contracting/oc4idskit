@@ -1,8 +1,6 @@
 import copy
 import json
 
-import pytest
-
 from oc4idskit import transforms
 from tests import read
 
