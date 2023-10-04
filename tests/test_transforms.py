@@ -7,7 +7,6 @@ from oc4idskit import transforms
 from tests import read
 
 
-@pytest.mark.vcr()
 def test_initial_transform_state():
     releases = json.loads(read("release-package_additional-contact-points.json"))[
         "releases"
@@ -17,7 +16,6 @@ def test_initial_transform_state():
     assert len(transform_state.releases_by_ocid["ocds-213czf-1"]) == 2
 
 
-@pytest.mark.vcr()
 def test_run_all():
     releases = [
         {
@@ -32,7 +30,6 @@ def test_run_all():
     assert output["parties"] == releases[0]["parties"]
 
 
-@pytest.mark.vcr()
 def test_run_all_release_package():
     releases_package_1 = [
         {
@@ -67,7 +64,6 @@ def test_run_all_release_package():
     ]
 
 
-@pytest.mark.vcr()
 def test_public_authority_role():
     releases = [
         {
@@ -106,7 +102,6 @@ def test_public_authority_role():
     assert len(output["parties"]) == 1
 
 
-@pytest.mark.vcr()
 def test_duplicate_public_authority_role():
 
     # Match on identifier
@@ -224,7 +219,6 @@ def test_duplicate_public_authority_role():
     assert output["parties"][0]["id"] == "1"
 
 
-@pytest.mark.vcr()
 def test_buyer_role():
     releases = [
         {
@@ -244,7 +238,6 @@ def test_buyer_role():
     assert "buyer" in output["parties"][0]["roles"]
 
 
-@pytest.mark.vcr()
 def test_sector():
     releases = [
         {
@@ -295,7 +288,6 @@ def test_sector():
     assert set(output["sector"]) == {"COFOG-04.5.1", "COFOG-2"}
 
 
-@pytest.mark.vcr()
 def test_additional_classifications():
     releases = [
         {
@@ -353,7 +345,6 @@ def test_additional_classifications():
     ]
 
 
-@pytest.mark.vcr()
 def test_title():
     releases = [
         {
@@ -383,7 +374,6 @@ def test_title():
     assert "title" not in output
 
 
-@pytest.mark.vcr()
 def test_title_from_tender():
     releases = [
         {
@@ -434,7 +424,6 @@ def test_title_from_tender():
     assert output["title"] == releases[0]["planning"]["project"]["title"]
 
 
-@pytest.mark.vcr()
 def test_contracting_process_setup_releases():
     releases = [
         {
@@ -502,7 +491,6 @@ def test_contracting_process_setup_releases():
     assert output == json.loads(expected)
 
 
-@pytest.mark.vcr()
 def test_contracting_process_setup_release_packages():
 
     releases = [
@@ -567,7 +555,6 @@ def test_contracting_process_setup_release_packages():
     assert output == json.loads(expected)
 
 
-@pytest.mark.vcr()
 def test_procuring_entity():
 
     releases = [
@@ -696,7 +683,6 @@ def test_procuring_entity():
     )
 
 
-@pytest.mark.vcr()
 def test_administrative_entity():
 
     releases = [
@@ -724,7 +710,6 @@ def test_administrative_entity():
     ] == {"id": "1", "name": "a"}
 
 
-@pytest.mark.vcr()
 def test_multiple_administrative_entity_in_process():
     releases = [
         {
@@ -754,7 +739,6 @@ def test_multiple_administrative_entity_in_process():
     assert "tender" not in output["contractingProcesses"][0]["summary"]
 
 
-@pytest.mark.vcr()
 def test_contract_status_pre_award():
 
     releases = [
@@ -825,7 +809,6 @@ def test_contract_status_pre_award():
     assert output["contractingProcesses"][5]["summary"].get("status") != "pre-award"
 
 
-@pytest.mark.vcr()
 def test_contract_status_active():
 
     releases = [
@@ -899,7 +882,6 @@ def test_contract_status_active():
     assert output["contractingProcesses"][4]["summary"]["status"] == "active"
 
 
-@pytest.mark.vcr()
 def test_contract_status_closed():
 
     releases = [
@@ -979,7 +961,6 @@ def test_contract_status_closed():
     assert output["contractingProcesses"][6]["summary"]["status"] != "closed"
 
 
-@pytest.mark.vcr()
 def test_procurment_process():
 
     releases = [
@@ -1009,7 +990,6 @@ def test_procurment_process():
     )
 
 
-@pytest.mark.vcr()
 def test_number_of_tenderers():
 
     releases = [
@@ -1037,7 +1017,6 @@ def test_number_of_tenderers():
     )
 
 
-@pytest.mark.vcr()
 def test_location():
     releases = [
         {
@@ -1056,7 +1035,6 @@ def test_location():
     assert output["locations"] == [{"description": "Mars"}]
 
 
-@pytest.mark.vcr()
 def test_location_multiple_releases():
     releases = [
         {
@@ -1090,7 +1068,6 @@ def test_location_multiple_releases():
     ]
 
 
-@pytest.mark.vcr()
 def test_location_from_item_location():
     releases = [
         {
@@ -1125,7 +1102,6 @@ def test_location_from_item_location():
     ]
 
 
-@pytest.mark.vcr()
 def test_location_from_delivery_address():
     releases = [
         {
@@ -1161,7 +1137,6 @@ def test_location_from_delivery_address():
     ]
 
 
-@pytest.mark.vcr()
 def test_location_multiple():
     releases = [
         {
@@ -1205,7 +1180,6 @@ def test_location_multiple():
     ]
 
 
-@pytest.mark.vcr()
 def test_location_not_inferred():
     releases = [
         {
@@ -1244,7 +1218,6 @@ def test_location_not_inferred():
     assert "locations" not in output
 
 
-@pytest.mark.vcr()
 def test_budget():
     releases = [
         {
@@ -1262,7 +1235,6 @@ def test_budget():
     assert output["budget"]["amount"] == releases[0]["planning"]["budget"]["amount"]
 
 
-@pytest.mark.vcr()
 def test_budget_multiple():
     releases = [
         {
@@ -1294,7 +1266,6 @@ def test_budget_multiple():
     )
 
 
-@pytest.mark.vcr()
 def test_budget_fail():
     releases = [
         {
@@ -1320,7 +1291,6 @@ def test_budget_fail():
     assert "budget" not in output
 
 
-@pytest.mark.vcr()
 def test_budget_approval():
     releases = [
         {
@@ -1378,7 +1348,6 @@ def test_budget_approval():
     assert output["documents"][1]["id"] == "2"
 
 
-@pytest.mark.vcr()
 def test_purpose_one():
     releases = [
         {
@@ -1396,7 +1365,6 @@ def test_purpose_one():
     assert output["purpose"] == releases[0]["planning"]["rationale"]
 
 
-@pytest.mark.vcr()
 def test_purpose_multiple():
     releases = [
         {
@@ -1423,7 +1391,6 @@ def test_purpose_multiple():
     assert output["purpose"] == rationales
 
 
-@pytest.mark.vcr()
 def test_needs_assessment():
     releases = [
         {
@@ -1454,7 +1421,6 @@ def test_needs_assessment():
     assert output["documents"] == [releases[0]["planning"]["documents"][0]]
 
 
-@pytest.mark.vcr()
 def test_description_one():
     releases = [
         {
@@ -1472,7 +1438,6 @@ def test_description_one():
     assert output["description"] == releases[0]["planning"]["project"]["description"]
 
 
-@pytest.mark.vcr()
 def test_description_multiple():
     releases = [
         {
@@ -1506,7 +1471,6 @@ def test_description_multiple():
     assert "description" not in output
 
 
-@pytest.mark.vcr()
 def test_description_tender():
     releases = [
         {
@@ -1545,7 +1509,6 @@ def test_description_tender():
     )
 
 
-@pytest.mark.vcr()
 def test_description_not_tender():
     releases = [
         {
@@ -1566,7 +1529,6 @@ def test_description_not_tender():
     assert output["description"] == releases[0]["planning"]["project"]["description"]
 
 
-@pytest.mark.vcr()
 def test_environmental_impact():
     releases = [
         {
@@ -1597,7 +1559,6 @@ def test_environmental_impact():
     assert output["documents"] == [releases[0]["planning"]["documents"][0]]
 
 
-@pytest.mark.vcr()
 def test_land_and_settlement_impact():
     releases = [
         {
@@ -1628,7 +1589,6 @@ def test_land_and_settlement_impact():
     assert output["documents"] == [releases[0]["planning"]["documents"][1]]
 
 
-@pytest.mark.vcr()
 def test_project_scope():
     releases = [
         {
@@ -1659,7 +1619,6 @@ def test_project_scope():
     assert output["documents"] == [releases[0]["planning"]["documents"][0]]
 
 
-@pytest.mark.vcr()
 def test_project_scope_summary():
     releases = [
         {
@@ -1699,7 +1658,6 @@ def test_project_scope_summary():
     )
 
 
-@pytest.mark.vcr()
 def test_funders_budget():
     releases = [
         {
@@ -1766,7 +1724,6 @@ def test_funders_budget():
     assert "funder" in output["parties"][0]["roles"]
 
 
-@pytest.mark.vcr()
 def test_funders():
     releases = [
         {
@@ -1800,7 +1757,6 @@ def test_funders():
     assert "funder" in output["parties"][0]["roles"]
 
 
-@pytest.mark.vcr()
 def test_cost_estimate():
 
     releases = [
@@ -1864,7 +1820,6 @@ def test_cost_estimate():
     }
 
 
-@pytest.mark.vcr()
 def test_contract_title():
 
     releases = [
@@ -1910,7 +1865,6 @@ def test_contract_title():
     assert output["contractingProcesses"][0]["summary"]["title"] == "b"
 
 
-@pytest.mark.vcr()
 def test_supplier():
 
     releases = [
@@ -1940,7 +1894,6 @@ def test_supplier():
     ]
 
 
-@pytest.mark.vcr()
 def test_contract_value():
 
     releases = [
@@ -1980,7 +1933,6 @@ def test_contract_value():
     assert "contractValue" not in output["contractingProcesses"][0]["summary"]
 
 
-@pytest.mark.vcr()
 def test_contracting_process_description():
 
     releases = [
@@ -2106,7 +2058,6 @@ def test_contracting_process_description():
     assert "description" not in output["contractingProcesses"][0]["summary"]
 
 
-@pytest.mark.vcr()
 def test_contracting_period():
 
     releases = [
@@ -2161,7 +2112,6 @@ def test_contracting_period():
     )
 
 
-@pytest.mark.vcr()
 def test_final_audit():
     releases = [
         {
