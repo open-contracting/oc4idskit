@@ -1,5 +1,5 @@
-from oc4idskit.commands.base import OC4IDSCommand
 from oc4idskit.combine import combine_project_packages
+from oc4idskit.commands.base import OC4IDSCommand
 
 
 class Command(OC4IDSCommand):
