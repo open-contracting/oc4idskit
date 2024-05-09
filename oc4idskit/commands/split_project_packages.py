@@ -1,7 +1,7 @@
-from ocdskit.commands.base import OCDSCommand
+from oc4idskit.commands.base import OC4IDSCommand
 
 
-class Command(OCDSCommand):
+class Command(OC4IDSCommand):
     name = "split-project-packages"
     help = "reads project packages from standard input, and prints many record packages for each"
 

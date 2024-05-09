@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Unreleased
+----------
+
+Fixed
+~~~~~
+
+-  Fix default version from 1.1 (OCDS) to 0.9 (OC4IDS).
+
 0.0.3 (2023-04-11)
 ------------------
 

@@ -1,14 +1,10 @@
-import logging
-
 from ocdskit.combine import _package
-from ocdskit.commands.base import OCDSCommand
 
 from oc4idskit import transforms
+from oc4idskit.commands.base import OC4IDSCommand
 
-logger = logging.getLogger("oc4idskit")
 
-
-class Command(OCDSCommand):
+class Command(OC4IDSCommand):
     name = "convert-from-ocds"
     help = """reads individual releases or release packages from standard input,
               and prints a single project conforming to the OC4IDS"""
