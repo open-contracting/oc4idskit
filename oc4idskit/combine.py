@@ -27,7 +27,8 @@ def combine_project_packages(packages, uri='', publisher=None, published_date=''
             output['projects'].extend(package['projects'])
         else:
             warnings.warn(
-                MissingProjectsWarning(f'item {i} has no "projects" field (check that it is a project package)')
+                f'item {i} has no "projects" field (check that it is a project package)',
+                category=MissingProjectsWarning,
             )
 
     if publisher:
