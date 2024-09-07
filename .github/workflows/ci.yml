@@ -16,7 +16,5 @@ jobs:
           cache: pip
           cache-dependency-path: setup.cfg
       - run: pip install .[test]
-      - run: pytest -W error --cov oc4idskit
-      - env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: coveralls --service=github
+      - run: coverage run --source=oc4idskit -m pytest -W error
+      - uses: coverallsapp/github-action@v2
