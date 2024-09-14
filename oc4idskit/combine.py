@@ -29,6 +29,7 @@ def combine_project_packages(packages, uri='', publisher=None, published_date=''
             warnings.warn(
                 f'item {i} has no "projects" field (check that it is a project package)',
                 category=MissingProjectsWarning,
+                stacklevel=2,
             )
 
     if publisher:

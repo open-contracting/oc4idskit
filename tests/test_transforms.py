@@ -146,7 +146,6 @@ def test_duplicate_public_authority_role():
     )
 
     assert len(output["parties"]) == 2
-    print(output["parties"])
     assert output["parties"][0]["id"] == "b-b"
     assert output["parties"][1]["id"] == "b-a"
 

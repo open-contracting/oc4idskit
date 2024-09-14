@@ -335,10 +335,7 @@ def sector(state):
         sector_scheme = cast_string(
             resolve(compiled_release, "/planning/project/sector/scheme")
         )
-        if sector_scheme:
-            sector_name = sector_scheme + "-" + sector_id
-        else:
-            sector_name = sector_id
+        sector_name = sector_scheme + "-" + sector_id if sector_scheme else sector_id
 
         if sector_name:
             sectors.append(sector_name)
@@ -369,12 +366,11 @@ def title(state):
     found_title = None
     for compiled_release in state.compiled_releases:
         project_title = resolve(compiled_release, "/planning/project/title")
-        if project_title:
-            if found_title and found_title != project_title:
-                logger.warning(
-                    "Multiple differing titles found for project %s", state.project_id
-                )
-                return
+        if project_title and found_title and found_title != project_title:
+            logger.warning(
+                "Multiple differing titles found for project %s", state.project_id
+            )
+            return
         found_title = project_title
     if found_title:
         state.output["title"] = project_title
@@ -431,10 +427,11 @@ def procuring_entity(state):
     for compiled_release, contracting_process in zip(
         state.compiled_releases, state.output["contractingProcesses"]
     ):
-        procuring_entities = []
-        for party in check_type(compiled_release.get("parties"), list):
-            if "procuringEntity" in check_type(party.get("roles"), list):
-                procuring_entities.append(party)
+        procuring_entities = [
+            party
+            for party in check_type(compiled_release.get("parties"), list)
+            if "procuringEntity" in check_type(party.get("roles"), list)
+        ]
         if len(procuring_entities) > 1:
             logger.warning(
                 "More than one procuringEntity in contractingProcesses with ocid %s skipping transform",
@@ -461,10 +458,11 @@ def administrative_entity(state):
     for compiled_release, contracting_process in zip(
         state.compiled_releases, state.output["contractingProcesses"]
     ):
-        administrative_entities = []
-        for party in check_type(compiled_release.get("parties"), list):
-            if "administrativeEntity" in check_type(party.get("roles"), list):
-                administrative_entities.append(party)
+        administrative_entities = [
+            party
+            for party in check_type(compiled_release.get("parties"), list)
+            if "administrativeEntity" in check_type(party.get("roles"), list)
+        ]
         if len(administrative_entities) > 1:
             logger.warning(
                 "More than one administrativeEntity in contractingProcesses with ocid %s skipping transform",
@@ -559,21 +557,19 @@ def contract_status(state):
             contracting_process["summary"]["status"] = "closed"
             continue
 
-        if awards:
-            if all(
-                check_type(award, dict).get("status") in ("cancelled", "unsuccessful")
-                for award in awards
-            ):
-                contracting_process["summary"]["status"] = "closed"
-                continue
+        if awards and all(
+            check_type(award, dict).get("status") in ("cancelled", "unsuccessful")
+            for award in awards
+        ):
+            contracting_process["summary"]["status"] = "closed"
+            continue
 
-        if contracts:
-            if all(
-                check_type(contract, dict).get("status") in ("cancelled", "terminated")
-                for contract in contracts
-            ):
-                contracting_process["summary"]["status"] = "closed"
-                continue
+        if contracts and all(
+            check_type(contract, dict).get("status") in ("cancelled", "terminated")
+            for contract in contracts
+        ):
+            contracting_process["summary"]["status"] = "closed"
+            continue
 
         if all(
             current_iso_datetime > cast_string(period.get("endDate", "9999-12-31"))
@@ -873,12 +869,11 @@ def suppliers(state):
         state.compiled_releases, state.output["contractingProcesses"]
     ):
         parties = check_type(compiled_release.get("parties"), list)
-        organization_references = []
-        for party in parties:
-            if "supplier" in check_type(party.get("roles"), list):
-                organization_references.append(
-                    {"id": party.get("id"), "name": party.get("name")}
-                )
+        organization_references = [
+            {"id": party.get("id"), "name": party.get("name")}
+            for party in parties
+            if "supplier" in check_type(party.get("roles"), list)
+        ]
 
         if organization_references:
             contracting_process["summary"]["suppliers"] = organization_references
@@ -903,15 +898,14 @@ def contract_price(state):
             if currency:
                 if award_currency is None:
                     award_currency = currency
-                else:
-                    if currency != award_currency:
-                        logger.warning(
-                            "Multiple currencies not supported %s, %s",
-                            award_currency,
-                            currency,
-                        )
-                        award_amount = 0
-                        break
+                elif currency != award_currency:
+                    logger.warning(
+                        "Multiple currencies not supported %s, %s",
+                        award_currency,
+                        currency,
+                    )
+                    award_amount = 0
+                    break
 
         if award_amount:
             contracting_process["summary"]["contractValue"] = {
