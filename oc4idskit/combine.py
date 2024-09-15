@@ -8,9 +8,9 @@ DEFAULT_VERSION = '0.9'  # fields might be deprecated
 
 def combine_project_packages(packages, uri='', publisher=None, published_date='', version=DEFAULT_VERSION):
     """
-    Collects the projects from the project packages into one project package.
+    Collect the projects from the project packages into one project package.
 
-    Warns ``~oc4idskit.exceptions.MissingProjectsWarning`` if the "projects" field is missing from a project package.
+    Warn ``~oc4idskit.exceptions.MissingProjectsWarning`` if the "projects" field is missing from a project package.
 
     :param packages: an iterable of project packages
     :param str uri: the project package's ``uri``
