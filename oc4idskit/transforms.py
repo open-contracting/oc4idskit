@@ -86,10 +86,10 @@ def run_transforms(config, releases, project_id=None, records=None, output=None)
             continue
         transforms_to_run.append(transform)
 
-    return _run_transforms(releases, project_id, records, output, transforms_to_run)
+    return run_selected_transforms(releases, project_id, records, output, transforms_to_run)
 
 
-def _run_transforms(
+def run_selected_transforms(
     releases, project_id=None, records=None, output=None, transforms=None
 ):
 
