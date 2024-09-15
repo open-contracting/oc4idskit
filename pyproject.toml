@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "oc4idskit"
-version = "0.0.3"
+version = "0.0.4"
 authors = [{name = "Open Contracting Partnership", email = "data@open-contracting.org"}]
 description = "A suite of command-line tools for working with OC4IDS data"
 readme = "README.rst"
@@ -13,7 +13,6 @@ urls = {Homepage = "https://github.com/open-contracting/oc4idskit"}
 classifiers = [
     "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

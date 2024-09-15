@@ -4,6 +4,16 @@ Changelog
 0.0.4 (Unreleased)
 ------------------
 
+Added
+~~~~~
+
+-  Add ``oc4idskit.transforms.run_selected_transforms``.
+
+Changed
+~~~~~~~
+
+-  Drop support for Python 3.7 and 3.8.
+
 Fixed
 ~~~~~
 
@@ -15,7 +25,7 @@ Fixed
 Changed
 ~~~~~~~
 
--  Drop support for Python 3.6 (end-of-life 2021-12-23).
+-  Drop support for Python 3.6.
 
 0.0.2 (2022-01-12)
 ------------------
