@@ -1,17 +1,17 @@
 # See ocdskit/tests/__init__.py
-import os.path
 import sys
 from difflib import ndiff
 from io import BytesIO, TextIOWrapper
+from pathlib import Path
 from unittest.mock import patch
 
 
 def path(filename):
-    return os.path.join("tests", "fixtures", filename)
+    return Path("tests") / "fixtures" / filename
 
 
 def read(filename, mode="rt", encoding=None, **kwargs):
-    with open(path(filename), mode, encoding=encoding, **kwargs) as f:
+    with path(filename).open( mode, encoding=encoding, **kwargs) as f:
         return f.read()
 
 
