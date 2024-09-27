@@ -471,11 +471,11 @@ def contract_status(state):
         contracts = check_type(compiled_release.get("contracts"), list)
         awards = check_type(compiled_release.get("awards"), list)
 
-        closed_tender = tender.get("status") in (
+        closed_tender = tender.get("status") in {
             "cancelled",
             "unsuccessful",
             "withdrawn",
-        )
+        }
 
         contract_periods = []
         if tender:
@@ -539,14 +539,14 @@ def contract_status(state):
             continue
 
         if awards and all(
-            check_type(award, dict).get("status") in ("cancelled", "unsuccessful")
+            check_type(award, dict).get("status") in {"cancelled", "unsuccessful"}
             for award in awards
         ):
             contracting_process["summary"]["status"] = "closed"
             continue
 
         if contracts and all(
-            check_type(contract, dict).get("status") in ("cancelled", "terminated")
+            check_type(contract, dict).get("status") in {"cancelled", "terminated"}
             for contract in contracts
         ):
             contracting_process["summary"]["status"] = "closed"
