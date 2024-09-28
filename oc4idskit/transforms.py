@@ -169,8 +169,7 @@ class InitialTransformState:
         duplicate_party_ids = False
 
         for compiled_release in self.compiled_releases:
-            parties = check_type(compiled_release.get("parties"), list)
-            for party in parties:
+            for party in check_type(compiled_release.get("parties"), list):
                 full_party_copy = copy.deepcopy(party)
                 partial_party_copy = copy.deepcopy(party)
                 partial_party_copy.pop("id", None)
