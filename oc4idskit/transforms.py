@@ -131,7 +131,7 @@ class InitialTransformState:
 
         if not records:
             record_package = next(
-                # Security: Potential SSRF via extension URLs (within OCDS publication).
+                # Security: Potential SSRF via extension URLs.
                 merge(
                     releases_or_release_packages,
                     return_package=True,
