@@ -18,10 +18,10 @@ def test_command(capsys, monkeypatch):
 
 
 def test_command_warning(capsys, monkeypatch):
-    with pytest.warns(MissingProjectsWarning) as records:
-        def data():
-            yield {}
+    def data():
+        yield {}
 
+    with pytest.warns(MissingProjectsWarning) as records:
         output = combine_project_packages(data())
 
     assert output == {"uri": "", "publisher": {}, "publishedDate": "", "version": "0.9", "projects": []}
