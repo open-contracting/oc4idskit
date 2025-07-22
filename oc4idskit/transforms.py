@@ -410,7 +410,7 @@ def procuring_entity(state):
     copy_party_by_role(state, "procuringEntity")
 
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         procuring_entities = [
             party
@@ -439,7 +439,7 @@ def administrative_entity(state):
     copy_party_by_role(state, "administrativeEntity")
 
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         administrative_entities = [
             party
@@ -465,7 +465,7 @@ def contract_status(state):
     current_iso_datetime = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
 
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         tender = check_type(compiled_release.get("tender"), dict)
         contracts = check_type(compiled_release.get("contracts"), list)
@@ -563,7 +563,7 @@ def contract_status(state):
 def procurement_process(state):
     """CoST IDS element: Procurement process."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         input_tender = check_type(compiled_release.get("tender"), dict)
         if input_tender:
@@ -585,7 +585,7 @@ def procurement_process(state):
 def number_of_tenderers(state):
     """CoST IDS element: Number of firms tendering."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         input_tender = check_type(compiled_release.get("tender"), dict)
         if input_tender:
@@ -790,7 +790,7 @@ def cost_estimate(state):
 def contract_title(state):
     """CoST IDS element: Contract title."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         awards = check_type(compiled_release.get("awards"), list)
         contracts = check_type(compiled_release.get("contracts"), list)
@@ -815,7 +815,7 @@ def suppliers(state):
     copy_party_by_role(state, "supplier")
 
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         parties = check_type(compiled_release.get("parties"), list)
         organization_references = [
@@ -831,7 +831,7 @@ def suppliers(state):
 def contract_price(state):
     """CoST IDS element: Contract price."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         awards = check_type(compiled_release.get("awards"), list)
         award_currency = None
@@ -864,7 +864,7 @@ def contract_price(state):
 def contract_process_description(state):
     """CoST IDS element: Contract scope of work."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         awards = check_type(compiled_release.get("awards"), list)
         contracts = check_type(compiled_release.get("contracts"), list)
@@ -908,7 +908,7 @@ def contract_process_description(state):
 def contract_period(state):
     """CoST IDS element: Contract start date and contract period (duration)."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         start_dates = []
         end_dates = []
@@ -938,7 +938,7 @@ def project_scope(state):
 def project_scope_summary(state):
     """CoST IDS element: Project Scope (main output)."""
     for compiled_release, contracting_process in zip(
-        state.compiled_releases, state.output["contractingProcesses"]
+        state.compiled_releases, state.output["contractingProcesses"], strict=True
     ):
         release_tender = compiled_release.get("tender", {})
         tender = contracting_process["summary"].get("tender", {})
