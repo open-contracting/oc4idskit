@@ -11,7 +11,7 @@ def path(filename):
 
 
 def read(filename, mode="rt", encoding=None, **kwargs):
-    with path(filename).open( mode, encoding=encoding, **kwargs) as f:
+    with path(filename).open(mode, encoding=encoding, **kwargs) as f:
         return f.read()
 
 

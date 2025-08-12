@@ -14,6 +14,6 @@ class Command(OC4IDSCommand):
             projects = package["projects"]
 
             for i in range(0, len(projects), self.args.size):
-                package.update(projects=projects[i:i + self.args.size])
+                package.update(projects=projects[i : i + self.args.size])
 
                 self.print(package)

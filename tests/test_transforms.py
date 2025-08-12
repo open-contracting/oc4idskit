@@ -6,9 +6,7 @@ from tests import read
 
 
 def test_initial_transform_state():
-    releases = json.loads(read("release-package_additional-contact-points.json"))[
-        "releases"
-    ]
+    releases = json.loads(read("release-package_additional-contact-points.json"))["releases"]
     transform_state = transforms.InitialTransformState(releases, "1")
     assert len(transform_state.compiled_releases) == 1
     assert len(transform_state.releases_by_ocid["ocds-213czf-1"]) == 2
@@ -76,9 +74,7 @@ def test_public_authority_role():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert output["parties"] == releases[0]["parties"]
 
     releases = [
@@ -94,14 +90,11 @@ def test_public_authority_role():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 1
 
 
 def test_duplicate_public_authority_role():
-
     # Match on identifier
     releases = [
         {
@@ -132,18 +125,14 @@ def test_duplicate_public_authority_role():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 1
     assert output["parties"][0]["id"] == "b-a"
 
     # No match on identifier
     releases[0]["parties"][0]["identifier"]["id"] = "b"
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
 
     assert len(output["parties"]) == 2
     assert output["parties"][0]["id"] == "b-b"
@@ -167,18 +156,14 @@ def test_duplicate_public_authority_role():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 1
     assert output["parties"][0]["id"] == "1"
 
     # No match on name
     releases[0]["parties"][0]["name"] = "org 2"
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 2
     # Generated autoincrement party ids
     assert output["parties"][0]["id"] == "1"
@@ -188,18 +173,14 @@ def test_duplicate_public_authority_role():
     releases[0]["parties"][0]["name"] = "org 1"
     releases[0]["parties"][0]["address"] = {"streetAddress": "1 the street"}
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 2
     assert output["parties"][0]["id"] == "1"
     assert output["parties"][1]["id"] == "2"
 
     # Match on name and address
     releases[1]["parties"][0]["address"] = {"streetAddress": "1 the street"}
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 1
     assert output["parties"][0]["id"] == "1"
 
@@ -207,9 +188,7 @@ def test_duplicate_public_authority_role():
     releases[1]["parties"][0]["roles"].append("some role")
     releases[1]["parties"][0]["roles"].append("some other role")
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.public_authority_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.public_authority_role])
     assert len(output["parties"]) == 1
 
     assert len(output["parties"][0]["roles"]) == 3
@@ -227,9 +206,7 @@ def test_buyer_role():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.buyer_role]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.buyer_role])
 
     assert "publicAuthority" in output["parties"][0]["roles"]
     assert "buyer" in output["parties"][0]["roles"]
@@ -292,15 +269,11 @@ def test_additional_classifications():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "planning": {
-                "project": {"additionalClassifications": [{"scheme": "a", "id": "1"}]}
-            },
+            "planning": {"project": {"additionalClassifications": [{"scheme": "a", "id": "1"}]}},
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.additional_classifications]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.additional_classifications])
     assert output["additionalClassifications"] == [{"scheme": "a", "id": "1"}]
 
     # same classification
@@ -310,15 +283,11 @@ def test_additional_classifications():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "planning": {
-                "project": {"additionalClassifications": [{"scheme": "a", "id": "1"}]}
-            },
+            "planning": {"project": {"additionalClassifications": [{"scheme": "a", "id": "1"}]}},
         }
     )
 
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.additional_classifications]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.additional_classifications])
     assert output["additionalClassifications"] == [{"scheme": "a", "id": "1"}]
 
     # new classification
@@ -328,14 +297,10 @@ def test_additional_classifications():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "planning": {
-                "project": {"additionalClassifications": [{"scheme": "a", "id": "2"}]}
-            },
+            "planning": {"project": {"additionalClassifications": [{"scheme": "a", "id": "2"}]}},
         }
     )
-    output = transforms.run_selected_transforms(
-        releases, "1", transforms=[transforms.additional_classifications]
-    )
+    output = transforms.run_selected_transforms(releases, "1", transforms=[transforms.additional_classifications])
     assert output["additionalClassifications"] == [
         {"scheme": "a", "id": "1"},
         {"scheme": "a", "id": "2"},
@@ -489,7 +454,6 @@ def test_contracting_process_setup_releases():
 
 
 def test_contracting_process_setup_release_packages():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -553,7 +517,6 @@ def test_contracting_process_setup_release_packages():
 
 
 def test_procuring_entity():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -572,9 +535,7 @@ def test_procuring_entity():
     )
 
     assert output["parties"] == releases[0]["parties"]
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"] == releases[0]["tender"]
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"] == releases[0]["tender"]
 
     # with identifier no duplicate party id
     releases = [
@@ -599,10 +560,7 @@ def test_procuring_entity():
     )
 
     assert output["parties"][0]["id"] == "1"
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"]
-        == "1"
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"] == "1"
 
     # with identifier and duplicate party id
     releases = [
@@ -640,10 +598,7 @@ def test_procuring_entity():
     )
 
     assert output["parties"][0]["id"] == "a-a"
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"]
-        == "a-a"
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"] == "a-a"
 
     # with genderated id
     releases = [
@@ -670,18 +625,11 @@ def test_procuring_entity():
 
     assert output["parties"][0]["id"] == "1"
     assert output["parties"][1]["id"] == "2"
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"]
-        == "1"
-    )
-    assert (
-        output["contractingProcesses"][1]["summary"]["tender"]["procuringEntity"]["id"]
-        == "2"
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"]["procuringEntity"]["id"] == "1"
+    assert output["contractingProcesses"][1]["summary"]["tender"]["procuringEntity"]["id"] == "2"
 
 
 def test_administrative_entity():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -702,9 +650,7 @@ def test_administrative_entity():
     )
 
     assert output["parties"] == releases[0]["parties"]
-    assert output["contractingProcesses"][0]["summary"]["tender"][
-        "administrativeEntity"
-    ] == {"id": "1", "name": "a"}
+    assert output["contractingProcesses"][0]["summary"]["tender"]["administrativeEntity"] == {"id": "1", "name": "a"}
 
 
 def test_multiple_administrative_entity_in_process():
@@ -737,7 +683,6 @@ def test_multiple_administrative_entity_in_process():
 
 
 def test_contract_status_pre_award():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -807,7 +752,6 @@ def test_contract_status_pre_award():
 
 
 def test_contract_status_active():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -830,9 +774,7 @@ def test_contract_status_active():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "contracts": [
-                {"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}
-            ],
+            "contracts": [{"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}],
             "tender": {"id": 1},
         },
         {
@@ -840,12 +782,8 @@ def test_contract_status_active():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "contracts": [
-                {"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}
-            ],
-            "awards": [
-                {"contractPeriod": {"startDate": "2000-01-01", "endDate": "3000-01-01"}}
-            ],
+            "contracts": [{"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}],
+            "awards": [{"contractPeriod": {"startDate": "2000-01-01", "endDate": "3000-01-01"}}],
             "tender": {"id": 1},
         },
         {
@@ -853,9 +791,7 @@ def test_contract_status_active():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "contracts": [
-                {"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}
-            ],
+            "contracts": [{"period": {"startDate": "2000-01-01", "endDate": "2000-01-01"}}],
             "tender": {
                 "id": 1,
                 "contractPeriod": {"startDate": "2000-01-01", "endDate": "3000-01-01"},
@@ -880,7 +816,6 @@ def test_contract_status_active():
 
 
 def test_contract_status_closed():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -959,7 +894,6 @@ def test_contract_status_closed():
 
 
 def test_procurment_process():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -982,13 +916,10 @@ def test_procurment_process():
         ],
     )
 
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"] == releases[0]["tender"]
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"] == releases[0]["tender"]
 
 
 def test_number_of_tenderers():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -1008,10 +939,7 @@ def test_number_of_tenderers():
         ],
     )
 
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["numberOfTenderers"]
-        == 123
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"]["numberOfTenderers"] == 123
 
 
 def test_location():
@@ -1025,9 +953,7 @@ def test_location():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.location]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.location])
 
     assert output["locations"] == [{"description": "Mars"}]
 
@@ -1039,11 +965,7 @@ def test_location_multiple_releases():
             "id": "1",
             "tag": "planning",
             "date": "2001-02-03T04:05:06Z",
-            "planning": {
-                "project": {
-                    "locations": [{"description": "Mars"}, {"description": "Jupiter"}]
-                }
-            },
+            "planning": {"project": {"locations": [{"description": "Mars"}, {"description": "Jupiter"}]}},
         },
         {
             "ocid": "ocds-213czf-2",
@@ -1054,9 +976,7 @@ def test_location_multiple_releases():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.location]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.location])
 
     assert output["locations"] == [
         {"description": "Mars"},
@@ -1094,9 +1014,7 @@ def test_location_from_item_location():
         "1",
         transforms=[transforms.location, transforms.location_from_items],
     )
-    assert output["locations"] == [
-        releases[0]["tender"]["items"][0]["deliveryLocation"]
-    ]
+    assert output["locations"] == [releases[0]["tender"]["items"][0]["deliveryLocation"]]
 
 
 def test_location_from_delivery_address():
@@ -1129,9 +1047,7 @@ def test_location_from_delivery_address():
         transforms=[transforms.location, transforms.location_from_items],
     )
 
-    assert output["locations"] == [
-        {"address": releases[0]["tender"]["items"][0]["deliveryAddress"]}
-    ]
+    assert output["locations"] == [{"address": releases[0]["tender"]["items"][0]["deliveryAddress"]}]
 
 
 def test_location_multiple():
@@ -1208,9 +1124,7 @@ def test_location_not_inferred():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.location]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.location])
 
     assert "locations" not in output
 
@@ -1226,9 +1140,7 @@ def test_budget():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.budget]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.budget])
     assert output["budget"]["amount"] == releases[0]["planning"]["budget"]["amount"]
 
 
@@ -1250,17 +1162,12 @@ def test_budget_multiple():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.budget]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.budget])
     total = float(releases[0]["planning"]["budget"]["amount"]["amount"]) + float(
         releases[1]["planning"]["budget"]["amount"]["amount"]
     )
     assert output["budget"]["amount"]["amount"] == total
-    assert (
-        output["budget"]["amount"]["currency"]
-        == releases[0]["planning"]["budget"]["amount"]["currency"]
-    )
+    assert output["budget"]["amount"]["currency"] == releases[0]["planning"]["budget"]["amount"]["currency"]
 
 
 def test_budget_fail():
@@ -1281,9 +1188,7 @@ def test_budget_fail():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.budget]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.budget])
     # Different currencies could not be totalled
     assert "budget" not in output
 
@@ -1312,9 +1217,7 @@ def test_budget_approval():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.budget_approval]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.budget_approval])
     assert output["documents"] == [releases[0]["planning"]["documents"][1]]
 
     # duplicate document id in different process, auto increment new doc ids.
@@ -1336,9 +1239,7 @@ def test_budget_approval():
         }
     )
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.budget_approval]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.budget_approval])
 
     assert len(output["documents"]) == 2
     assert output["documents"][0]["id"] == "1"
@@ -1356,9 +1257,7 @@ def test_purpose_one():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.purpose]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.purpose])
     assert output["purpose"] == releases[0]["planning"]["rationale"]
 
 
@@ -1382,9 +1281,7 @@ def test_purpose_multiple():
 
     rationales = "<ocds-213czf-1> We were hungry.\n<ocds-213czf-2> There are never enough post-its.\n"
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.purpose]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.purpose])
     assert output["purpose"] == rationales
 
 
@@ -1429,9 +1326,7 @@ def test_description_one():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.description]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.description])
     assert output["description"] == releases[0]["planning"]["project"]["description"]
 
 
@@ -1453,17 +1348,13 @@ def test_description_multiple():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.description]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.description])
     assert output["description"] == releases[0]["planning"]["project"]["description"]
 
     # contraditing descriptions
     releases[0]["planning"]["project"]["description"] = "another description"
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.description]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.description])
 
     assert "description" not in output
 
@@ -1501,8 +1392,7 @@ def test_description_tender():
         transforms=[transforms.description, transforms.description_tender],
     )
     assert (
-        output["description"]
-        == "<ocds-213czf-1> A project description\n<ocds-213czf-2> A new project description\n"
+        output["description"] == "<ocds-213czf-1> A project description\n<ocds-213czf-2> A new project description\n"
     )
 
 
@@ -1610,9 +1500,7 @@ def test_project_scope():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.project_scope]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.project_scope])
     assert output["documents"] == [releases[0]["planning"]["documents"][0]]
 
 
@@ -1645,14 +1533,8 @@ def test_project_scope_summary():
 
     assert "items" in output["contractingProcesses"][0]["summary"]["tender"]
     assert "milestones" in output["contractingProcesses"][0]["summary"]["tender"]
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["items"]
-        == releases[0]["tender"]["items"]
-    )
-    assert (
-        output["contractingProcesses"][0]["summary"]["tender"]["milestones"]
-        == releases[0]["tender"]["milestones"]
-    )
+    assert output["contractingProcesses"][0]["summary"]["tender"]["items"] == releases[0]["tender"]["items"]
+    assert output["contractingProcesses"][0]["summary"]["tender"]["milestones"] == releases[0]["tender"]["milestones"]
 
 
 def test_funders_budget():
@@ -1712,9 +1594,7 @@ def test_funders_budget():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.funding_sources]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.funding_sources])
 
     assert output["parties"][0]["id"] == "GB-LAC-E09000003-557"
     assert output["parties"][0]["details"] == "This is just a test."
@@ -1745,9 +1625,7 @@ def test_funders():
         }
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.funding_sources]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.funding_sources])
 
     assert output["parties"][0]["id"] == "GB-LAC-E09000003-557"
     assert output["parties"][0]["details"] == "This is just a test."
@@ -1755,7 +1633,6 @@ def test_funders():
 
 
 def test_cost_estimate():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -1779,9 +1656,7 @@ def test_cost_estimate():
         transforms=[transforms.contracting_process_setup, transforms.cost_estimate],
     )
 
-    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {
-        "amount": 10
-    }
+    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {"amount": 10}
 
     # reverse releases
     releases[0]["date"], releases[1]["date"] = releases[1]["date"], releases[0]["date"]
@@ -1792,9 +1667,7 @@ def test_cost_estimate():
         transforms=[transforms.contracting_process_setup, transforms.cost_estimate],
     )
 
-    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {
-        "amount": 1
-    }
+    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {"amount": 1}
 
     releases.append(
         {
@@ -1812,13 +1685,10 @@ def test_cost_estimate():
         "1",
         transforms=[transforms.contracting_process_setup, transforms.cost_estimate],
     )
-    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {
-        "amount": 1
-    }
+    assert output["contractingProcesses"][0]["summary"]["tender"]["costEstimate"] == {"amount": 1}
 
 
 def test_contract_title():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -1863,7 +1733,6 @@ def test_contract_title():
 
 
 def test_supplier():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -1892,7 +1761,6 @@ def test_supplier():
 
 
 def test_contract_value():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -1931,7 +1799,6 @@ def test_contract_value():
 
 
 def test_contracting_process_description():
-
     releases = [
         {
             "ocid": "ocds-213czf-1",
@@ -2056,7 +1923,6 @@ def test_contracting_process_description():
 
 
 def test_contracting_period():
-
     releases = [
         {
             "ocid": "ocds-213czf-4",
@@ -2077,9 +1943,7 @@ def test_contracting_period():
                     }
                 },
             ],
-            "tender": {
-                "contractPeriod": {"startDate": "2100-01-01", "endDate": "2200-01-01"}
-            },
+            "tender": {"contractPeriod": {"startDate": "2100-01-01", "endDate": "2200-01-01"}},
         }
     ]
 
@@ -2103,10 +1967,7 @@ def test_contracting_period():
         transforms=[transforms.contracting_process_setup, transforms.contract_period],
     )
 
-    assert (
-        output["contractingProcesses"][0]["summary"]["contractPeriod"]
-        == releases[0]["tender"]["contractPeriod"]
-    )
+    assert output["contractingProcesses"][0]["summary"]["contractPeriod"] == releases[0]["tender"]["contractPeriod"]
 
 
 def test_final_audit():
@@ -2153,9 +2014,7 @@ def test_final_audit():
         },
     ]
 
-    output = transforms.run_selected_transforms(
-        copy.deepcopy(releases), "1", transforms=[transforms.final_audit]
-    )
+    output = transforms.run_selected_transforms(copy.deepcopy(releases), "1", transforms=[transforms.final_audit])
     assert output["documents"] == [
         releases[0]["contracts"][0]["implementation"]["documents"][0],
         releases[0]["contracts"][1]["implementation"]["documents"][0],

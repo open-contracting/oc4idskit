@@ -80,21 +80,14 @@ def run_transforms(config, releases, project_id=None, records=None, output=None)
 
     for transform in TRANSFORM_LIST:
         transform_name = transform.__name__
-        if (
-            not config.get("all")
-            and not config.get(transform_name)
-            and transform_name in OPTIONAL_TRANSFORMS
-        ):
+        if not config.get("all") and not config.get(transform_name) and transform_name in OPTIONAL_TRANSFORMS:
             continue
         transforms_to_run.append(transform)
 
     return run_selected_transforms(releases, project_id, records, output, transforms_to_run)
 
 
-def run_selected_transforms(
-    releases, project_id=None, records=None, output=None, transforms=None
-):
-
+def run_selected_transforms(releases, project_id=None, records=None, output=None, transforms=None):
     state = InitialTransformState(releases, project_id, records, output)
     if not transforms:
         transforms = TRANSFORM_LIST
@@ -106,17 +99,13 @@ def run_selected_transforms(
 
 
 class InitialTransformState:
-    def __init__(
-        self, releases_or_release_packages, project_id=None, records=None, output=None
-    ):
+    def __init__(self, releases_or_release_packages, project_id=None, records=None, output=None):
         # coerce generator into list as we iterate over it twice.
         releases_or_release_packages = list(releases_or_release_packages)
         all_releases = []
         for releases_or_release_package in releases_or_release_packages:
             if is_package(releases_or_release_package):
-                all_releases.extend(
-                    check_type(releases_or_release_package.get("releases"), list)
-                )
+                all_releases.extend(check_type(releases_or_release_package.get("releases"), list))
             else:
                 all_releases.append(releases_or_release_package)
 
@@ -146,12 +135,8 @@ class InitialTransformState:
             record_releases = check_type(record.get("releases"), list)
 
             compiled_release = check_type(record.get("compiledRelease"), dict)
-            compiled_release["releases"] = [
-                release for release in record_releases if release.get("url")
-            ]
-            compiled_release["embeddedReleases"] = [
-                release for release in record_releases if not release.get("url")
-            ]
+            compiled_release["releases"] = [release for release in record_releases if release.get("url")]
+            compiled_release["embeddedReleases"] = [release for release in record_releases if not release.get("url")]
 
             compiled_releases.append(compiled_release)
 
@@ -205,10 +190,7 @@ class InitialTransformState:
         for party in all_parties:
             found_party = None
             for unique_party in unique_parties:
-                if (
-                    party["unique_identifier"]
-                    and party["unique_identifier"] == unique_party["unique_identifier"]
-                ):
+                if party["unique_identifier"] and party["unique_identifier"] == unique_party["unique_identifier"]:
                     found_party = unique_party
                     break
                 if party["party_fingerprint"] == unique_party["party_fingerprint"]:
@@ -296,7 +278,6 @@ def concat_ocid_and_string(state, path_to_string):
     """
     strings = ""
     for compiled_release in state.compiled_releases:
-
         ocid = cast_string(resolve(compiled_release, "/ocid"))
         a_string = cast_string(resolve(compiled_release, path_to_string))
 
@@ -321,12 +302,8 @@ def sector(state):
     """CoST IDS element: Sector."""
     sectors = []
     for compiled_release in state.compiled_releases:
-        sector_id = cast_string(
-            resolve(compiled_release, "/planning/project/sector/id")
-        )
-        sector_scheme = cast_string(
-            resolve(compiled_release, "/planning/project/sector/scheme")
-        )
+        sector_id = cast_string(resolve(compiled_release, "/planning/project/sector/id"))
+        sector_scheme = cast_string(resolve(compiled_release, "/planning/project/sector/scheme"))
         sector_name = sector_scheme + "-" + sector_id if sector_scheme else sector_id
 
         if sector_name:
@@ -339,9 +316,7 @@ def sector(state):
 def additional_classifications(state):
     """CoST IDS element: Subsector."""
     for compiled_release in state.compiled_releases:
-        additionalclassifications = resolve(
-            compiled_release, "/planning/project/additionalClassifications"
-        )
+        additionalclassifications = resolve(compiled_release, "/planning/project/additionalClassifications")
         if additionalclassifications:
             state.output.setdefault("additionalClassifications", [])
             for classification in additionalclassifications:
@@ -355,9 +330,7 @@ def title(state):
     for compiled_release in state.compiled_releases:
         project_title = resolve(compiled_release, "/planning/project/title")
         if project_title and found_title and found_title != project_title:
-            logger.warning(
-                "Multiple differing titles found for project %s", state.project_id
-            )
+            logger.warning("Multiple differing titles found for project %s", state.project_id)
             return
         found_title = project_title
     if found_title:
@@ -429,9 +402,7 @@ def procuring_entity(state):
             name = procuring_entities[0].get("name")
             if name:
                 organization_reference["name"] = name
-            contracting_process["summary"]["tender"][
-                "procuringEntity"
-            ] = organization_reference
+            contracting_process["summary"]["tender"]["procuringEntity"] = organization_reference
 
 
 def administrative_entity(state):
@@ -491,25 +462,16 @@ def contract_status(state):
                 contracting_process["summary"]["status"] = "pre-award"
                 continue
 
-            all_contracts_pending = all(
-                (contract.get("status") == "pending") for contract in contracts
-            )
-            all_awards_pending = all(
-                award.get("status") == "pending" for award in awards
-            )
+            all_contracts_pending = all((contract.get("status") == "pending") for contract in contracts)
+            all_awards_pending = all(award.get("status") == "pending" for award in awards)
 
             if all_contracts_pending and all_awards_pending:
                 contracting_process["summary"]["status"] = "pre-award"
                 continue
 
-            all_awards_in_future = all(
-                cast_string(award.get("date")) > current_iso_datetime
-                for award in awards
-            )
+            all_awards_in_future = all(cast_string(award.get("date")) > current_iso_datetime for award in awards)
 
-            award_period_start_date = cast_string(
-                resolve(tender, "/awardPeriod/startDate")
-            )
+            award_period_start_date = cast_string(resolve(tender, "/awardPeriod/startDate"))
             award_period_in_future = award_period_start_date > current_iso_datetime
 
             if all_awards_in_future and award_period_in_future:
@@ -538,24 +500,17 @@ def contract_status(state):
             contracting_process["summary"]["status"] = "closed"
             continue
 
-        if awards and all(
-            check_type(award, dict).get("status") in {"cancelled", "unsuccessful"}
-            for award in awards
-        ):
+        if awards and all(check_type(award, dict).get("status") in {"cancelled", "unsuccessful"} for award in awards):
             contracting_process["summary"]["status"] = "closed"
             continue
 
         if contracts and all(
-            check_type(contract, dict).get("status") in {"cancelled", "terminated"}
-            for contract in contracts
+            check_type(contract, dict).get("status") in {"cancelled", "terminated"} for contract in contracts
         ):
             contracting_process["summary"]["status"] = "closed"
             continue
 
-        if all(
-            current_iso_datetime > cast_string(period.get("endDate", "9999-12-31"))
-            for period in contract_periods
-        ):
+        if all(current_iso_datetime > cast_string(period.get("endDate", "9999-12-31")) for period in contract_periods):
             contracting_process["summary"]["status"] = "closed"
             continue
 
@@ -570,16 +525,12 @@ def procurement_process(state):
             procurement_method = input_tender.get("procurementMethod")
             if procurement_method:
                 contracting_process["summary"].setdefault("tender", {})
-                contracting_process["summary"]["tender"][
-                    "procurementMethod"
-                ] = procurement_method
+                contracting_process["summary"]["tender"]["procurementMethod"] = procurement_method
 
             procurement_method_details = input_tender.get("procurementMethodDetails")
             if procurement_method_details:
                 contracting_process["summary"].setdefault("tender", {})
-                contracting_process["summary"]["tender"][
-                    "procurementMethodDetails"
-                ] = procurement_method_details
+                contracting_process["summary"]["tender"]["procurementMethodDetails"] = procurement_method_details
 
 
 def number_of_tenderers(state):
@@ -592,9 +543,7 @@ def number_of_tenderers(state):
             numberoftenderers = input_tender.get("numberOfTenderers")
             if numberoftenderers:
                 contracting_process["summary"].setdefault("tender", {})
-                contracting_process["summary"]["tender"][
-                    "numberOfTenderers"
-                ] = numberoftenderers
+                contracting_process["summary"]["tender"]["numberOfTenderers"] = numberoftenderers
 
 
 def location(state):
@@ -616,10 +565,8 @@ def location_from_items(state):
 
     locations = []
     for compiled_release in state.compiled_releases:
-
         items = resolve_list(compiled_release, "/tender/items")
         for item in check_type(items, list):
-
             append_if(locations, resolve(item, "/deliveryLocation"))
 
             delivery_address = resolve(item, "/deliveryAddress")
@@ -642,14 +589,8 @@ def budget(state):
         budget_amounts = []
 
         for compiled_release in state.compiled_releases:
-            budget_amounts.append(
-                cast_number_or_zero(
-                    resolve(compiled_release, "/planning/budget/amount/amount")
-                )
-            )
-            budget_currencies.add(
-                resolve(compiled_release, "/planning/budget/amount/currency")
-            )
+            budget_amounts.append(cast_number_or_zero(resolve(compiled_release, "/planning/budget/amount/amount")))
+            budget_currencies.add(resolve(compiled_release, "/planning/budget/amount/currency"))
 
         if len(budget_currencies) > 1:
             logger.warning(
@@ -782,9 +723,7 @@ def cost_estimate(state):
 
         if latest_planning_value:
             contracting_process["summary"].setdefault("tender", {})
-            contracting_process["summary"]["tender"][
-                "costEstimate"
-            ] = latest_planning_value
+            contracting_process["summary"]["tender"]["costEstimate"] = latest_planning_value
 
 
 def contract_title(state):
@@ -882,9 +821,7 @@ def contract_process_description(state):
                 append_if(tender_items_descriptions, tender_item.get("description"))
 
             if len(tender_items_descriptions) == 1:
-                contracting_process["summary"][
-                    "description"
-                ] = tender_items_descriptions[0]
+                contracting_process["summary"]["description"] = tender_items_descriptions[0]
             continue
 
         for entries in (contracts, awards):

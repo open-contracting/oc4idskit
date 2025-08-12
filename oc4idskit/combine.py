@@ -3,10 +3,10 @@ import warnings
 from oc4idskit.exceptions import MissingProjectsWarning
 from oc4idskit.util import _empty_project_package, _remove_empty_optional_metadata, _update_package_metadata
 
-DEFAULT_VERSION = '0.9'  # fields might be deprecated
+DEFAULT_VERSION = "0.9"  # fields might be deprecated
 
 
-def combine_project_packages(packages, uri='', publisher=None, published_date='', version=DEFAULT_VERSION):
+def combine_project_packages(packages, uri="", publisher=None, published_date="", version=DEFAULT_VERSION):
     """
     Collect the projects from the project packages into one project package.
 
@@ -23,8 +23,8 @@ def combine_project_packages(packages, uri='', publisher=None, published_date=''
 
     for i, package in enumerate(packages):
         _update_package_metadata(output, package)
-        if 'projects' in package:
-            output['projects'].extend(package['projects'])
+        if "projects" in package:
+            output["projects"].extend(package["projects"])
         else:
             warnings.warn(
                 f'item {i} has no "projects" field (check that it is a project package)',
@@ -33,7 +33,7 @@ def combine_project_packages(packages, uri='', publisher=None, published_date=''
             )
 
     if publisher:
-        output['publisher'] = publisher
+        output["publisher"] = publisher
 
     _remove_empty_optional_metadata(output)
 
