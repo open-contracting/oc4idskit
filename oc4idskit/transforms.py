@@ -2,7 +2,7 @@
 # https://docs.google.com/spreadsheets/d/1xyKXbNktcfKm6siSzM_C7aHCOsOjWUQro5aU8ZYIHyc/edit#gid=1993217545
 
 import copy
-import datetime
+import datetime as dt
 import decimal
 import json
 import logging
@@ -433,7 +433,7 @@ def administrative_entity(state):
 
 def contract_status(state):
     """CoST IDS element: Contract status."""
-    current_iso_datetime = datetime.datetime.now(tz=datetime.timezone.utc).isoformat()
+    current_iso_datetime = dt.datetime.now(tz=dt.timezone.utc).isoformat()
 
     for compiled_release, contracting_process in zip(
         state.compiled_releases, state.output["contractingProcesses"], strict=True
