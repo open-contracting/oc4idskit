@@ -433,7 +433,7 @@ def administrative_entity(state):
 
 def contract_status(state):
     """CoST IDS element: Contract status."""
-    current_iso_datetime = dt.datetime.now(tz=dt.timezone.utc).isoformat()
+    current_iso_datetime = dt.datetime.now(tz=dt.UTC).isoformat()
 
     for compiled_release, contracting_process in zip(
         state.compiled_releases, state.output["contractingProcesses"], strict=True

@@ -12,7 +12,7 @@ Added
 Removed
 ~~~~~~~
 
--  Drop support for Python 3.9.
+-  Drop support for Python 3.9, 3.10.
 
 0.0.4 (2024-09-15)
 ------------------
